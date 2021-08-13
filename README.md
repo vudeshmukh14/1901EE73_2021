@@ -1,2 +1,2 @@
-# Vishwajeet_Python
-Repository for CS384 Python 2021 course
+# tuts_2021
+CS384 Tuts Projects
