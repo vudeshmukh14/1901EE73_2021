@@ -21,9 +21,9 @@ def get_memory_score(check_list):
         elif x not in memory_list and len(memory_list)<5:
             memory_list.append(x)
 
-    print("Score:", score)
+    # print("Score:", score)
 
-    return
+    return score
 
 input_nums = [3, 4, 5, 3, 2, 1]
-get_memory_score(input_nums)
+print("Score:", get_memory_score(input_nums))
