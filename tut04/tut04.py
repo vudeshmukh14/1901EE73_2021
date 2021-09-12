@@ -1,49 +1,58 @@
-import csv
 import os
-from openpyxl import Workbook,load_workbook
+import csv
+from openpyxl import Workbook, load_workbook
 
-def output_by_subject(new_row, heading):
+def output_by_subject(file):
     if os.path.isdir("output_by_subject")==False:
         os.mkdir("output_by_subject")
-    path=r"output_by_subject\\"
-    if os.path.exists(path+'%s.xlsx' %new_row[2]) == False:
-        wb = Workbook()
-        sheet = wb.active
-        sheet.append(heading)
-        wb.save(path+'%s.xlsx' %new_row[2])
 
-    wb = load_workbook(path+'%s.xlsx' %new_row[2])
-    sheet = wb.active
-    sheet.append(new_row)
-    wb.save(path+'%s.xlsx' %new_row[2])
+    reader=csv.reader(file, delimiter=',', skipinitialspace=True)
+    first=True
+    header=[]
+    for row in reader:
+        if first:
+            header=[row[0]+row[1]+row[3]+row[8]]
+            first=False
+        else :
+            if os.path.exists("output_by_subject/%s.xlsx"%row[3])==False:
+                wb=Workbook()
+                sheet=wb.active
+                sheet.append(header)
+                wb.save("output_by_subject/%s.xlsx"%row[3])
+            
+            wb=load_workbook("output_by_subject/%s.xlsx"%row[3])
+            sheet=wb.active
+            sheet.append([row[0]+row[1]+row[3]+row[8]])
+            wb.save("output_by_subject/%s.xlsx"%row[3])
     return
 
-def output_individual_roll(new_row, heading):
+def output_individual_roll(file):
     if os.path.isdir("output_individual_roll")==False:
         os.mkdir("output_individual_roll")
-    path=r"output_individual_roll\\"
-    if os.path.exists(path+'%s.xlsx' %new_row[0]) == False:
-        wb = Workbook()
-        sheet = wb.active
-        sheet.append(heading)
-        wb.save(path+'%s.xlsx' %new_row[0])
 
-    wb = load_workbook(path+'%s.xlsx' %new_row[0])
-    sheet = wb.active
-    sheet.append(new_row)
-    wb.save(path+'%s.xlsx' %new_row[0])
+    reader=csv.reader(file, delimiter=',', skipinitialspace=True)
+    first=True
+    header=[]
+    for row in reader:
+        if first:
+            header=[row[0]+row[1]+row[3]+row[8]]
+            first=False
+        else :
+            if os.path.exists("output_individual_roll/%s.xlsx"%row[0])==False:
+                wb=Workbook()
+                sheet=wb.active
+                sheet.append(header)
+                wb.save("output_individual_roll/%s.xlsx"%row[0])
+            
+            wb=load_workbook("output_individual_roll/%s.xlsx"%row[0])
+            sheet=wb.active
+            sheet.append([row[0]+row[1]+row[3]+row[8]])
+            wb.save("output_individual_roll/%s.xlsx"%row[0])
+
     return
 
+with open("regtable_old.csv") as file:
+    output_individual_roll(file)
 
-with open('regtable_old.csv', 'r') as file:      
-    reader = csv.reader(file)
-    cnt = 0
-    heading=[]
-    for row in reader:
-        if  cnt == 0:
-            heading=[row[0],row[1],row[3],row[8]]
-            cnt += 1
-        else:
-            new_row=[row[0],row[1],row[3],row[8]] 
-            output_individual_roll(new_row, heading)
-            output_by_subject(new_row, heading)
+with open("regtable_old.csv") as file:
+    output_by_subject(file)
